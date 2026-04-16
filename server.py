@@ -16,6 +16,7 @@ BASE_URL = "https://vlrggapi.vercel.app"
 @mcp.tool()
 async def get_news() -> dict:
     """Fetch the latest Valorant esports news articles from vlr.gg. Use this when the user wants to know about recent news, announcements, roster moves, or any current events in the Valorant esports scene."""
+    _track("get_news")
     async with httpx.AsyncClient(timeout=30) as client:
         response = await client.get(f"{BASE_URL}/v2/news")
         response.raise_for_status()
@@ -29,6 +30,7 @@ async def get_matches(q: str = "live_score") -> dict:
     Args:
         q: Type of match data to retrieve. Options: 'live_score' (currently ongoing matches), 'upcoming' (scheduled future matches), 'results' (recently completed matches), 'upcoming_extended' (upcoming matches with extra details)
     """
+    _track("get_matches")
     async with httpx.AsyncClient(timeout=30) as client:
         response = await client.get(f"{BASE_URL}/v2/match", params={"q": q})
         response.raise_for_status()
@@ -42,6 +44,7 @@ async def get_rankings(region: str = "all") -> dict:
     Args:
         region: Region to filter rankings by. Examples: 'na' (North America), 'eu' (Europe), 'ap' (Asia-Pacific), 'la' (Latin America), 'oce' (Oceania), 'mn' (MENA), 'gc' (Game Changers), 'br' (Brazil), 'cn' (China), 'all' for global rankings.
     """
+    _track("get_rankings")
     async with httpx.AsyncClient(timeout=30) as client:
         response = await client.get(f"{BASE_URL}/v2/rankings", params={"region": region})
         response.raise_for_status()
@@ -56,6 +59,7 @@ async def get_stats(region: str = "all", timespan: str = "all") -> dict:
         region: Region to filter stats by. Examples: 'na', 'eu', 'ap', 'la', 'br', 'oce', 'mn', 'gc', 'cn', 'all'.
         timespan: Time period for stats. Examples: '30' (last 30 days), '60' (last 60 days), '90' (last 90 days), 'all' (all time).
     """
+    _track("get_stats")
     async with httpx.AsyncClient(timeout=30) as client:
         response = await client.get(
             f"{BASE_URL}/v2/stats",
@@ -72,6 +76,7 @@ async def get_events(region: str = "all") -> dict:
     Args:
         region: Region to filter events by. Examples: 'na', 'eu', 'ap', 'la', 'br', 'oce', 'mn', 'gc', 'cn', 'all'.
     """
+    _track("get_events")
     async with httpx.AsyncClient(timeout=30) as client:
         response = await client.get(f"{BASE_URL}/v2/events", params={"region": region})
         response.raise_for_status()
@@ -85,6 +90,7 @@ async def get_match_details(match_id: str) -> dict:
     Args:
         match_id: The vlr.gg match ID (numeric). Found in vlr.gg match URLs, e.g., for 'vlr.gg/12345/team-a-vs-team-b' the ID is '12345'.
     """
+    _track("get_match_details")
     async with httpx.AsyncClient(timeout=30) as client:
         response = await client.get(f"{BASE_URL}/v2/match/{match_id}")
         response.raise_for_status()
@@ -93,6 +99,7 @@ async def get_match_details(match_id: str) -> dict:
 
 @mcp.tool()
 async def get_player_profile(
+    _track("get_player_profile")
     player_id: str,
     timespan: str = "all",
     include_matches: bool = False
@@ -127,6 +134,7 @@ async def get_player_profile(
 
 @mcp.tool()
 async def get_team_profile(
+    _track("get_team_profile")
     team_id: str,
     include_matches: bool = False,
     include_transactions: bool = False
